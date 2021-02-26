@@ -80,7 +80,7 @@ do
     f)  cmdline_filename="$OPTARG";;
     d)  cmdline_dl_dir="$OPTARG";;
     h) echo >&2 \
-      "install_puppet_agent.sh - A shell script to install Puppet Agent > 6.0.0, assuming no dependencies
+      "install_puppet_agent.sh - A shell script to install Puppet Agent > 5.0.0, assuming no dependencies
       usage:
       -v   version         version to install, defaults to \$latest_version
       -f   filename        filename for downloaded file, defaults to original name
@@ -187,6 +187,11 @@ else
       ;;
     4*)
       critical "Cannot install Puppet 4 with this script, you need to use install_puppet_agent.sh"
+      report_bug
+      exit 1
+      ;;
+    5*)
+      critical "Cannot install Puppet 5 with this script, you need to use install_puppet_5_agent.sh"
       report_bug
       exit 1
       ;;
@@ -438,6 +443,7 @@ install_file() {
       info "installing puppetlabs apt repo with dpkg..."
       dpkg -i "$2"
       apt-get update -y
+      apt-get install apt-transport-https ca-certificates -y
       if test "$version" = 'latest'; then
         apt-get install -y puppet-agent
       else
@@ -482,13 +488,13 @@ case $platform in
         info "Red hat like platform! Lets get you an RPM..."
         filetype="rpm"
         filename="puppet6-release-el-${platform_version}.noarch.rpm"
-        download_url="http://yum.puppetlabs.com/puppet6/${filename}"
+        download_url="http://yum.puppetlabs.com/${filename}"
         ;;
       "fedora")
         info "Fedora platform! Lets get the RPM..."
         filetype="rpm"
         filename="puppet6-release-fedora-${platform_version}.noarch.rpm"
-        download_url="http://yum.puppetlabs.com/puppet6/${filename}"
+        download_url="http://yum.puppetlabs.com/${filename}"
         ;;
       "debian")
         info "Debian platform! Lets get you a DEB..."
@@ -498,6 +504,7 @@ case $platform in
           "7") deb_codename="wheezy";;
           "8") deb_codename="jessie";;
           "9") deb_codename="stretch";;
+          "10") deb_codename="buster";;
         esac
         filetype="deb"
         filename="puppet6-release-${deb_codename}.deb"
@@ -517,6 +524,7 @@ case $platform in
           "16.10") deb_codename="yakkety";;
           "17.04") deb_codename="zesty";;
           "18.04") deb_codename="bionic";;
+          "20.04") deb_codename="focal";;
           "14.10") utopic;;
         esac
         filetype="deb"

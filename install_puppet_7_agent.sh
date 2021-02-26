@@ -190,6 +190,11 @@ else
       report_bug
       exit 1
       ;;
+    5*)
+      critical "Cannot install Puppet 5 with this script, you need to use install_puppet_5_agent.sh"
+      report_bug
+      exit 1
+      ;;
     *)
       info "Version parameter defined: $version";
       ;;
@@ -482,47 +487,33 @@ case $platform in
       "el")
         info "Red hat like platform! Lets get you an RPM..."
         filetype="rpm"
-        filename="puppet5-release-el-${platform_version}.noarch.rpm"
-        download_url="http://yum.puppetlabs.com/puppet5/${filename}"
+        filename="puppet7-release-el-${platform_version}.noarch.rpm"
+        download_url="http://yum.puppetlabs.com/${filename}"
         ;;
       "fedora")
         info "Fedora platform! Lets get the RPM..."
         filetype="rpm"
-        filename="puppet5-release-fedora-${platform_version}.noarch.rpm"
-        download_url="http://yum.puppetlabs.com/puppet5/${filename}"
+        filename="puppet7-release-fedora-${platform_version}.noarch.rpm"
+        download_url="http://yum.puppetlabs.com/${filename}"
         ;;
       "debian")
         info "Debian platform! Lets get you a DEB..."
         case $major_version in
-          "5") deb_codename="lenny";;
-          "6") deb_codename="squeeze";;
-          "7") deb_codename="wheezy";;
-          "8") deb_codename="jessie";;
           "9") deb_codename="stretch";;
           "10") deb_codename="buster";;
         esac
         filetype="deb"
-        filename="puppet5-release-${deb_codename}.deb"
+        filename="puppet7-release-${deb_codename}.deb"
         download_url="http://apt.puppetlabs.com/${filename}"
         ;;
       "ubuntu")
         info "Ubuntu platform! Lets get you a DEB..."
         case $platform_version in
-          "12.04") deb_codename="precise";;
-          "12.10") deb_codename="quantal";;
-          "13.04") deb_codename="raring";;
-          "13.10") deb_codename="saucy";;
-          "14.04") deb_codename="trusty";;
-          "15.04") deb_codename="vivid";;
-          "15.10") deb_codename="wily";;
-          "16.04") deb_codename="xenial";;
-          "16.10") deb_codename="yakkety";;
-          "17.04") deb_codename="zesty";;
           "18.04") deb_codename="bionic";;
-          "14.10") utopic;;
+          "20.04") deb_codename="focal";;
         esac
         filetype="deb"
-        filename="puppet5-release-${deb_codename}.deb"
+        filename="puppet7-release-${deb_codename}.deb"
         download_url="http://apt.puppetlabs.com/${filename}"
         ;;
       "mac_os_x")
